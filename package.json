@@ -30,6 +30,7 @@
     "prepublish": "npm ls"
   },
   "devDependencies": {
+    "chai": "^3.2.0",
     "mocha": "^2.3.0",
     "rimraf": "^2.4.3"
   }

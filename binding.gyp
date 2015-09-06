@@ -3,7 +3,7 @@
   # node-pre-gyp handles passing them down to node-gyp when you build from source
   "targets": [
 		{
-		"target_name": "lib-dds",
+		"target_name": "libdds",
       "product_name": "dds",
       "type": "static_library",
       "sources": [
@@ -48,10 +48,11 @@
       "target_name": "<(module_name)",
       "sources": [ 
       	"binding.cpp",
-      	"src/calc-dd-table.cpp" 
+      	"src/calc-dd-table.cpp",
+      	"src/par.cpp"
       ],
       "dependencies": [
-        "lib-dds"
+        "libdds"
       ]
     },
     {
