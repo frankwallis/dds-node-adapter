@@ -1,0 +1,36 @@
+{
+  "name": "dds-node-adapter",
+  "version": "0.1.0",
+  "description": "node adapter for dds double-dummy solver",
+  "main": "./index.js",
+  "author": "Frank Wallis",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/frankwallis/dds-node-adapter.git"
+  },
+  "binary": {
+    "module_name": "dds-node-adapter",
+    "module_path": "./lib/binding/{configuration}/{node_abi}-{platform}-{arch}/",
+    "remote_path": "./{module_name}/v{version}/{configuration}/",
+    "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz",
+    "host": "https://node-pre-gyp-tests.s3-us-west-1.amazonaws.com"
+  },
+  "dependencies": {
+    "node-pre-gyp": "0.5.x"
+  },
+  "bundledDependencies": [
+    "node-pre-gyp"
+  ],
+  "scripts": {
+    "install": "npm run compile",
+    "clean": "rimraf build lib",
+    "compile": "node-pre-gyp install --fallback-to-build",
+    "build": "npm run clean; npm run compile",
+    "test": "mocha",
+    "prepublish": "npm ls"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.0",
+    "rimraf": "^2.4.3"
+  }
+}
