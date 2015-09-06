@@ -48,6 +48,7 @@
       "target_name": "<(module_name)",
       "sources": [ 
       	"binding.cpp",
+      	"src/solve-board.cpp",
       	"src/calc-dd-table.cpp",
       	"src/par.cpp"
       ],

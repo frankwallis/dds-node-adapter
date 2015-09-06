@@ -13,15 +13,14 @@ void NODE_Par(const FunctionCallbackInfo<Value>& args) {
 	ddTableResults tableResults;
  	Local<Array> tableResultsJS = Local<Array>::Cast(args[0]);
 
- 	for (int i = 0; i < DDS_STRAINS; i ++) {
+ 	for (int i = 0; i < DDS_STRAINS; ++i) {
  		Local<Array> resRow = Local<Array>::Cast(tableResultsJS ->Get(i));
 
- 		for (int j = 0; j < DDS_HANDS; j ++) {
+ 		for (int j = 0; j < DDS_HANDS; ++j) {
  			tableResults.resTable[i][j] = resRow ->Get(j) ->IntegerValue();
  		}
  	}
 
- 	/* vulnerable 0: None 1: Both 2: NS 3: EW */
 	int vulnerable = args[1] ->IntegerValue();
 
 	/* call the function */
