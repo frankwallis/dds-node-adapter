@@ -13,17 +13,17 @@ struct ParAsyncRequest : AsyncRequest {
 
 	~ParAsyncRequest() {
 		delete tableResults;
-		delete result;
+		delete result;		
 	}
 };
 
-int PerformSyncPar(AsyncRequest* asyncReq) {
+int PerformSyncPar(AsyncRequest * asyncReq) {
 	ParAsyncRequest* request = reinterpret_cast<ParAsyncRequest*>(asyncReq);
 	return Par(request ->tableResults, request ->result, request ->vulnerable);
 }
 
-Local<Value> AsyncResultPar(AsyncRequest* asyncReq) {
-	ParAsyncRequest* request = reinterpret_cast<ParAsyncRequest*>(asyncReq);
+Local<Value> AsyncResultPar(AsyncRequest * asyncReq) {
+	ParAsyncRequest * request = reinterpret_cast<ParAsyncRequest*>(asyncReq);
 	parResults * result = request ->result;
 	Isolate * isolate = request ->isolate;
 
@@ -48,7 +48,7 @@ void NODE_Par(const FunctionCallbackInfo<Value>& args) {
 	HandleScope scope(isolate);
 
 	/* get the arguments */
-	ddTableResults* tableResults = new ddTableResults(); // TODO - check this gets freed
+	ddTableResults * tableResults = new ddTableResults();
  	Local<Array> tableResultsJS = Local<Array>::Cast(args[0]);
 
  	for (int i = 0; i < DDS_STRAINS; ++i) {
@@ -63,7 +63,7 @@ void NODE_Par(const FunctionCallbackInfo<Value>& args) {
 	Local<Function> callback = Local<Function>::Cast(args[2]);
 
 	/* results struct */
-	parResults* result = new parResults(); // TODO - check this gets freed
+	parResults * result = new parResults();
 	memset(result, 0, sizeof(parResults));
 
 	/* setup the request */
@@ -71,7 +71,6 @@ void NODE_Par(const FunctionCallbackInfo<Value>& args) {
 	asyncRequest ->isolate = isolate;
 	asyncRequest ->performSync = &PerformSyncPar;
 	asyncRequest ->asyncResult = &AsyncResultPar;
-	//asyncRequest.callback = Persistent<Function>::New(isolate, callback);
 	asyncRequest ->callback.Reset(isolate, callback);
 	asyncRequest ->tableResults = tableResults;
 	asyncRequest ->vulnerable = vulnerable;

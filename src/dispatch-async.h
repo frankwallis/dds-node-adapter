@@ -13,7 +13,7 @@ struct AsyncRequest {
 	ResultDelegate asyncResult;
 	int errorCode;
 	
-	/* inherit to add custom params */
+	virtual ~AsyncRequest() {}
 };
 
 extern "C" {
