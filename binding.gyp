@@ -48,9 +48,11 @@
 		"target_name": "<(module_name)",
 		"sources": [ 
 			"binding.cpp",
+			"src/dispatch-async.cpp",
 			"src/solve-board.cpp",
 			"src/calc-dd-table.cpp",
-			"src/par.cpp"
+			"src/par.cpp",
+			"src/set-max-threads.cpp",
 		],
 		"dependencies": [
 		  "libdds"

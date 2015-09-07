@@ -6,7 +6,7 @@ var assert = require('assert');
 
 describe("CalcDDtable", function() {
 
-	it("returns the right results", function() {
+	it("returns the right results", function(done) {
 		var pbn = "E:AT5.AJT.A632.KJ7 Q763.KQ9.KQJ94.T 942.87653..98653 KJ8.42.T875.AQ42";
 		var expected = [ 
 			[ 8, 5, 8, 5, 5 ],
@@ -15,7 +15,10 @@ describe("CalcDDtable", function() {
 			[ 5, 8, 5, 8, 9 ] 
 		];
 
-		result = binding.CalcDDtable(pbn);
-		assert.deepEqual(expected, result);
+		binding.CalcDDtable(pbn, function(result) {
+			assert.deepEqual(expected, result);	
+			done();
+		});
+		
 	});
 });

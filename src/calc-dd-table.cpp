@@ -2,46 +2,71 @@
 #include <string>
 #include <dll.h>
 #include "calc-dd-table.h"
+#include "dispatch-async.h"
 
 using namespace v8;
 
-void NODE_SetMaxThreads(const FunctionCallbackInfo<Value>& args) {
-	int arg0 = args[0] ->IntegerValue();
-	SetMaxThreads(arg0);
+struct CalcAsyncRequest : AsyncRequest {
+	ddTableDealPBN* tableDeal;
+	ddTableResults* result;
+	
+	~CalcAsyncRequest() {
+		delete tableDeal;
+		delete result;
+	}
+};
+
+int PerformSyncCalc(AsyncRequest* asyncReq) {
+	CalcAsyncRequest* request = reinterpret_cast<CalcAsyncRequest*>(asyncReq);
+	return CalcDDtablePBN(*(request ->tableDeal), request ->result);
 }
 
-void NODE_CalcDDtable(const FunctionCallbackInfo<Value>& args) {
-	Isolate* isolate = Isolate::GetCurrent();
-	HandleScope scope(isolate);
-  
-	ddTableDealPBN pbn;
-	ddTableResults result;
+Local<Value> AsyncResultCalc(AsyncRequest* asyncReq) {
+	CalcAsyncRequest* request = reinterpret_cast<CalcAsyncRequest*>(asyncReq);
+	ddTableResults * result = request ->result;
+	Isolate * isolate = request ->isolate;
 
-	String::Utf8Value input(args[0] ->ToString());
-	char * pbn_arg = *input;
-	strncpy(pbn.cards, pbn_arg, sizeof pbn.cards - 1);
- 	pbn.cards[sizeof pbn.cards-1] = '\0';
-
-	int ret = CalcDDtablePBN(pbn, &result);
-
-	if (ret != RETURN_NO_FAULT) {
-		char msg[80];
-		ErrorMessage(ret, msg);
-		printf("%s\n", msg);
-	}
-
+	/* extract the results */
  	Local<Array> resTable = Array::New(isolate, 5);
 
  	for (int i = 0; i < DDS_HANDS; ++i) {
  		Local<Array> resRow = Array::New(isolate, 4);
 
  		for (int j = 0; j < DDS_STRAINS; ++j) {
- 			Local<Number> num = Number::New(isolate, result.resTable[i][j]); 
+ 			Local<Number> num = Number::New(isolate, result ->resTable[i][j]); 
  			resRow ->Set(j, num);
  		}
 
  		resTable ->Set(i, resRow);
  	}
 
- 	args.GetReturnValue().Set(resTable);
+ 	return resTable;
+}
+
+void NODE_CalcDDtable(const FunctionCallbackInfo<Value>& args) {
+	Isolate* isolate = args.GetIsolate();
+	HandleScope scope(isolate);
+  
+	ddTableDealPBN* tableDeal = new ddTableDealPBN();
+	String::Utf8Value input(args[0] ->ToString());
+	strncpy(tableDeal ->cards, *input, sizeof tableDeal ->cards - 1);
+ 	tableDeal ->cards[sizeof tableDeal ->cards-1] = '\0';
+
+	Local<Function> callback = Local<Function>::Cast(args[1]);
+
+	ddTableResults * result = new ddTableResults();
+	memset(result, 0, sizeof(ddTableResults));
+
+	/* setup the request */
+	CalcAsyncRequest* asyncRequest = new CalcAsyncRequest();
+	asyncRequest ->isolate = isolate;
+	asyncRequest ->performSync = &PerformSyncCalc;
+	asyncRequest ->asyncResult = &AsyncResultCalc;
+	asyncRequest ->callback.Reset(isolate, callback);
+	asyncRequest ->tableDeal = tableDeal;
+	asyncRequest ->result = result;
+
+	/* and dispatch it */
+	dispatchAsync(asyncRequest);
+ 	args.GetReturnValue().SetUndefined();
 }

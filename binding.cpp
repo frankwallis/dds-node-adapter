@@ -3,6 +3,7 @@
 
 #include "src/calc-dd-table.h"
 #include "src/solve-board.h"
+#include "src/set-max-threads.h"
 #include "src/par.h"
 
 using namespace v8;
@@ -18,5 +19,4 @@ extern "C" {
 	}
 }
 
-// what the hell is app3?!
-NODE_MODULE(app3, start)
+NODE_MODULE(dds, start)
