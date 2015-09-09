@@ -2,7 +2,6 @@
 #include <v8.h>
 #include <uv.h>
 #include <dll.h>
-#include <string.h>
 #include "dispatch-async.h"
 
 using namespace v8;

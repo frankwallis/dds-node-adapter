@@ -23,7 +23,7 @@
     "install": "napa dds-bridge/dds && node-pre-gyp install --fallback-to-build",
     "clean": "rimraf build lib",
     "build": "node-pre-gyp build",
-    "rebuild": "npm run clean; node-pre-gyp install --fallback-to-build",
+    "rebuild": "npm run clean; node-pre-gyp install --build-from-source",
     "test": "mocha",
     "prepublish": "npm ls"
   },
@@ -35,5 +35,6 @@
   },
   "engines" : { 
     "node" : ">=0.12" 
-  }
+  },
+  "license": "Apache 2.0"
 }
