@@ -9,20 +9,18 @@
     "url": "git://github.com/frankwallis/dds-node-adapter.git"
   },
   "binary": {
-    "module_name": "dds-node-adapter",
+    "module_name": "dds_node_adapter",
     "module_path": "./lib/binding/{configuration}/{node_abi}-{platform}-{arch}/",
     "remote_path": "./{module_name}/v{version}/{configuration}/",
     "package_name": "{module_name}-v{version}-{node_abi}-{platform}-{arch}.tar.gz",
-    "host": "https://node-pre-gyp-tests.s3-us-west-1.amazonaws.com"
+    "host": "https://dds-node-adapter.s3-eu-west-1.amazonaws.com"
   },
   "dependencies": {
+    "napa": "^1.2.0",
     "node-pre-gyp": "0.5.x"
   },
-  "bundledDependencies": [
-    "node-pre-gyp"
-  ],
   "scripts": {
-    "install": "napa dds-bridge/dds && npm run rebuild",
+    "install": "napa dds-bridge/dds && node-pre-gyp install --fallback-to-build",
     "clean": "rimraf build lib",
     "build": "node-pre-gyp build",
     "rebuild": "npm run clean; node-pre-gyp install --fallback-to-build",
@@ -30,9 +28,9 @@
     "prepublish": "npm ls"
   },
   "devDependencies": {
+    "aws-sdk": "^2.1.50",
     "chai": "^3.2.0",
     "mocha": "^2.3.0",
-    "napa": "^1.2.0",
     "rimraf": "^2.4.3"
   }
 }

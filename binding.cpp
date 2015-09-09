@@ -19,4 +19,4 @@ extern "C" {
 	}
 }
 
-NODE_MODULE(dds, start)
+NODE_MODULE(dds_node_adapter, start)
