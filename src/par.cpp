@@ -1,5 +1,5 @@
 #include <v8.h>
-#include <string>
+#include <cstring>
 #include <dll.h>
 #include "par.h"
 #include "dispatch-async.h"
