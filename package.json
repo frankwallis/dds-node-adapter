@@ -21,7 +21,7 @@
   },
   "scripts": {
     "install": "napa dds-bridge/dds && node-pre-gyp install --fallback-to-build",
-    "clean": "rimraf build lib",
+    "clean": "node-pre-gyp clean",
     "build": "node-pre-gyp build",
     "rebuild": "npm run clean; node-pre-gyp install --build-from-source",
     "test": "mocha",
@@ -29,12 +29,13 @@
   },
   "devDependencies": {
     "aws-sdk": "^2.1.50",
+    "bluebird": "^2.10.0",
     "chai": "^3.2.0",
     "mocha": "^2.3.0",
     "rimraf": "^2.4.3"
   },
-  "engines" : { 
-    "node" : ">=0.12" 
+  "engines": {
+    "node": ">=0.12"
   },
   "license": "Apache-2.0"
 }

@@ -5,7 +5,7 @@ A node addon for the DDS bridge double dummy solver.
 
 ## Depends
 
-- Node.js 0.11.x or higher
+- Node.js 0.12.x or higher
 
 ## Install
 

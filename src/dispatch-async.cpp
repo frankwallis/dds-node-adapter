@@ -14,7 +14,7 @@ void DoAsync (uv_work_t* task) {
 
 void AfterAsync (uv_work_t* task) {
 	AsyncRequest* req = reinterpret_cast<AsyncRequest*>(task ->data);
-	Isolate * isolate = req ->isolate;
+	Isolate * isolate = Isolate::GetCurrent();//req ->isolate;
 	HandleScope scope(isolate);
 
 	Local<Function> callback = Local<Function>::New(isolate, req ->callback);
