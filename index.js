@@ -91,6 +91,7 @@ module.exports.par = function(resultTable, vulnerable, callback) {
 	}
 }
 
+// You can provide a Promise implementation
 module.exports.Promise = global.Promise;
 
 function createDeferred() {
