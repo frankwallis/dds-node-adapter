@@ -12,6 +12,7 @@ A node addon for the [DDS](https://github.com/dds-bridge/dds) bridge double dumm
 
 ## Methods Implemented
 
+```
 solveBoard(boardInfo, options): Promise<SolveResults>;
 solveBoard(boardInfo, options, callback<SolveResults>);
 
@@ -20,3 +21,4 @@ calcResultTable(deal, callback<ResultTable>);
 
 par(resultTable, vulnerability): Promise<ParContracts>;
 par(resultTable, vulnerability, callback<ParContracts>);
+```
