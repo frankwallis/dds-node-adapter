@@ -29,10 +29,10 @@ Local<Value> AsyncResultCalc(AsyncRequest* asyncReq) {
 	/* extract the results */
  	Local<Array> resTable = Array::New(isolate, 5);
 
- 	for (int i = 0; i < DDS_HANDS; ++i) {
+ 	for (int i = 0; i < DDS_STRAINS; ++i) {
  		Local<Array> resRow = Array::New(isolate, 4);
 
- 		for (int j = 0; j < DDS_STRAINS; ++j) {
+ 		for (int j = 0; j < DDS_HANDS; ++j) {
  			Local<Number> num = Number::New(isolate, result ->resTable[i][j]); 
  			resRow ->Set(j, num);
  		}
@@ -46,11 +46,23 @@ Local<Value> AsyncResultCalc(AsyncRequest* asyncReq) {
 void NODE_CalcDDtable(const FunctionCallbackInfo<Value>& args) {
 	Isolate* isolate = args.GetIsolate();
 	HandleScope scope(isolate);
-  
+ 	args.GetReturnValue().SetUndefined();
+ 	  
 	ddTableDealPBN* tableDeal = new ddTableDealPBN();
+
+ 	if (!args[0] ->IsString()) {
+		isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "pbn should be a PBN string")));
+		return;
+ 	}
+
 	String::Utf8Value input(args[0] ->ToString());
 	strncpy(tableDeal ->cards, *input, sizeof tableDeal ->cards - 1);
  	tableDeal ->cards[sizeof tableDeal ->cards-1] = '\0';
+
+ 	if (!args[1] ->IsFunction()) {
+		isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "callback should be a function")));
+		return;
+ 	}
 
 	Local<Function> callback = Local<Function>::Cast(args[1]);
 
@@ -68,5 +80,4 @@ void NODE_CalcDDtable(const FunctionCallbackInfo<Value>& args) {
 
 	/* and dispatch it */
 	dispatchAsync(asyncRequest);
- 	args.GetReturnValue().SetUndefined();
 }

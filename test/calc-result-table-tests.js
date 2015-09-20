@@ -7,12 +7,14 @@ var expect = require('chai').expect;
 describe("calcResultTable", function() {
 
 	it("returns the right results in callback", function(done) {
-		var pbn = "E:AT5.AJT.A632.KJ7 Q763.KQ9.KQJ94.T 942.87653..98653 KJ8.42.T875.AQ42";
+		// from dds examples
+		var pbn = "N:QJ6.K652.J85.T98 873.J97.AT764.Q4 K5.T83.KQ9.A7652 AT942.AQ4.32.KJ3";
 		var expected = [
-			[ 8, 5, 8, 5, 5 ],
-			[ 5, 8, 4, 8, 10 ],
-			[ 10, 3, 10, 3, 5 ],
-			[ 5, 8, 5, 8, 9 ]
+			[ 5, 8, 5, 8 ],
+			[ 6, 6, 6, 6 ],
+			[ 5, 7, 5, 7 ],
+			[ 7, 5, 7, 5 ],
+			[ 6, 6, 6, 6 ]
 		];
 
 		dds.calcResultTable(pbn, function(result, err) {
@@ -23,12 +25,14 @@ describe("calcResultTable", function() {
 	});
 
 	it("returns the right results in promise", function() {
-		var pbn = "E:AT5.AJT.A632.KJ7 Q763.KQ9.KQJ94.T 942.87653..98653 KJ8.42.T875.AQ42";
+		// from dds examples
+		var pbn = "N:QJ6.K652.J85.T98 873.J97.AT764.Q4 K5.T83.KQ9.A7652 AT942.AQ4.32.KJ3";
 		var expected = [
-			[ 8, 5, 8, 5, 5 ],
-			[ 5, 8, 4, 8, 10 ],
-			[ 10, 3, 10, 3, 5 ],
-			[ 5, 8, 5, 8, 9 ]
+			[ 5, 8, 5, 8 ],
+			[ 6, 6, 6, 6 ],
+			[ 5, 7, 5, 7 ],
+			[ 7, 5, 7, 5 ],
+			[ 6, 6, 6, 6 ]
 		];
 
 		return dds.calcResultTable(pbn)
@@ -36,4 +40,9 @@ describe("calcResultTable", function() {
 				expect(result).to.deep.equal(expected);
 			});
 	});
+
+	it("validates pbn argument", function() {
+		expect(() => dds.calcResultTable(null)).to.throw(/should be a PBN string/);
+	});
+
 });
