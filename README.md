@@ -3,7 +3,7 @@ dds-node-adapter
 
 [![build status](https://secure.travis-ci.org/frankwallis/dds-node-adapter.png)](http://travis-ci.org/frankwallis/dds-node-adapter)
 
-A node addon for the [DDS](https://github.com/dds-bridge/dds) bridge double dummy solver. The computation methods are run asynchronously and can return results eithr in a Promise or via a callback. Uses [node-pre-gyp](https://github.com/mapbox/node-pre-gyp) to manage the build and install.
+A node addon for the [DDS](https://github.com/dds-bridge/dds) bridge double dummy solver. The computation methods are run asynchronously and can return results either in a Promise or via a callback. Uses [node-pre-gyp](https://github.com/mapbox/node-pre-gyp) to manage the build and install.
 
 ## Platform requirements
 
