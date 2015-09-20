@@ -1,8 +1,6 @@
-
 var dds = require("../");
 dds.setMaxThreads(2);
 
-dds.Promise = require('bluebird');
 var expect = require('chai').expect;
 
 describe("solveBoard", function() {
@@ -54,6 +52,32 @@ describe("solveBoard", function() {
 			});
 	});
 
+	it("validates arguments", function() {
+		var pbn = "E:AT5.AJT.A632.KJ7 Q763.KQ9.KQJ94.T 942.87653..98653 KJ8.42.T875.AQ42";
+
+		var deal = {
+			trump: dds.SUIT_SPADES,
+			first: dds.HAND_SOUTH,
+			currentTrickRank: [],
+			currentTrickSuit: [],
+			remainCards: pbn
+		}
+
+		var options = {
+			target: dds.TARGET_MAXIMUM,
+			solutions: dds.SOLUTION_FULL,
+			mode: dds.MODE_AUTO_SEARCH
+		};
+
+		deal.trump = "sausage";
+		expect(() => dds.solveBoard(deal, options)).to.throw(/deal.trump/);
+
+		deal.trump = dds.SUIT_SPADES;
+		delete deal.currentTrickRank;
+
+		expect(() => dds.solveBoard(deal, options)).to.throw(/currentTrickRank/);
+	});
+
 	it("returns errors", function() {
 		var pbn = "E:AT5.AJT.A632.KJ7 Q763.KQ9.KQJ94.T 999.87653..98653 KJ8.42.T875.AQ42";
 
@@ -87,7 +111,7 @@ describe("solveBoard", function() {
 		var deal = {
 			trump: dds.SUIT_SPADES,
 			first: dds.HAND_NORTH,
-			currentTrickRanks: [14],
+			currentTrickRank: [14],
 			currentTrickSuit: [dds.SUIT_SPADES],
 			remainCards: pbn
 		}
@@ -108,7 +132,7 @@ describe("solveBoard", function() {
 				expect(result.score[1]).to.equal(0);
 				expect(result.rank[1]).to.equal(13);
 
-				deal.currentTrickRanks = [7];
+				deal.currentTrickRank = [7];
 				deal.currentTrickSuit = [dds.SUIT_SPADES];
 				return dds.solveBoard(deal, options);
 			})

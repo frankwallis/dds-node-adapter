@@ -1,6 +1,5 @@
 var dds = require("../");
 dds.setMaxThreads(2);
-dds.Promise = require('bluebird');
 
 var expect = require('chai').expect;
 

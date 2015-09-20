@@ -70,30 +70,100 @@ Local<Value> AsyncResultSolve(AsyncRequest* asyncReq) {
 void NODE_SolveBoard(const FunctionCallbackInfo<Value>& args) {
 	Isolate* isolate = Isolate::GetCurrent();
 	HandleScope scope(isolate);
+ 	args.GetReturnValue().SetUndefined();
 
 	/* sort out the arguments */
 	dealPBN* deal = new dealPBN;
 
+	if (!args[0] -> IsObject()) {
+		isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "deal should be an object")));
+		return;
+ 	}
+
 	Local<Object> dealJS = args[0] ->ToObject();
+
+	if (!dealJS -> Has(String::NewFromUtf8(isolate, "trump"))) {
+		isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "deal should have a trump property")));
+		return;
+ 	}
+
+	if (!dealJS -> Has(String::NewFromUtf8(isolate, "first"))) {
+		isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "deal should have a first property")));
+		return;
+ 	}
+
+	if (!dealJS -> Has(String::NewFromUtf8(isolate, "currentTrickSuit"))) {
+		isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "deal should have a currentTrickSuit property")));
+		return;
+ 	}
+
+	if (!dealJS -> Has(String::NewFromUtf8(isolate, "currentTrickRank"))) {
+		isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "deal should have a currentTrickRank property")));
+		return;
+ 	}
+
+	if (!dealJS -> Has(String::NewFromUtf8(isolate, "remainCards"))) {
+		isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "deal should have a remainCards property")));
+		return;
+ 	}
+
+ 	if (!dealJS ->Get(String::NewFromUtf8(isolate, "trump")) ->IsNumber())  {
+		isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "deal.trump should be a number")));
+		return;
+ 	}
+
 	deal ->trump = dealJS ->Get(String::NewFromUtf8(isolate, "trump")) ->IntegerValue();
+
+ 	if (!dealJS ->Get(String::NewFromUtf8(isolate, "first")) ->IsNumber())  {
+		isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "deal.first should be a number")));
+		return;
+ 	}
+
 	deal ->first = dealJS ->Get(String::NewFromUtf8(isolate, "first")) ->IntegerValue();
 	
+ 	if (!dealJS ->Get(String::NewFromUtf8(isolate, "currentTrickSuit")) ->IsArray())  {
+		isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "deal.currentTrickSuit should be an array")));
+		return;
+ 	}
+
  	Local<Array> trickSuits = Local<Array>::Cast(dealJS ->Get(String::NewFromUtf8(isolate, "currentTrickSuit")));
 
  	for (unsigned i = 0; i < 3; ++i) {
- 		if (i < trickSuits ->Length())
+ 		if (i < trickSuits ->Length()) {
+ 			if (!trickSuits ->Get(i) ->IsNumber()) {
+				isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "deal.currentTrickSuit should contain numbers")));
+				return;
+ 			}
+
 			deal ->currentTrickSuit[i] = trickSuits ->Get(i) ->IntegerValue();	
+ 		}
 		else 
 			deal ->currentTrickSuit[i] = 0;
  	}
 
- 	Local<Array> trickRanks = Local<Array>::Cast(dealJS ->Get(String::NewFromUtf8(isolate, "currentTrickRanks")));
+ 	if (!dealJS ->Get(String::NewFromUtf8(isolate, "currentTrickRank")) ->IsArray())  {
+		isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "deal.currentTrickRank should be an array")));
+		return;
+ 	}
+
+ 	Local<Array> trickRanks = Local<Array>::Cast(dealJS ->Get(String::NewFromUtf8(isolate, "currentTrickRank")));
 
  	for (unsigned j = 0; j < 3; ++j) {
- 		if (j < trickRanks ->Length())
+ 		if (j < trickRanks ->Length()) {
+ 			if (!trickRanks ->Get(j) ->IsNumber()) {
+				isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "deal.currentTrickRank should contain numbers")));
+				return;
+ 			}
+
 			deal ->currentTrickRank[j] = trickRanks ->Get(j) ->IntegerValue();	
+ 		}
 		else 
 			deal ->currentTrickRank[j] = 0;
+ 	}
+
+ 	if (!dealJS ->Get(String::NewFromUtf8(isolate, "remainCards")) ->IsString())  {
+		isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "deal.remainCards should be a string")));
+		return;
  	}
 
 	String::Utf8Value remaining(dealJS ->Get(String::NewFromUtf8(isolate, "remainCards")) ->ToString());
@@ -126,5 +196,4 @@ void NODE_SolveBoard(const FunctionCallbackInfo<Value>& args) {
 
 	/* and dispatch it */
 	dispatchAsync(asyncRequest);
- 	args.GetReturnValue().SetUndefined();
 }
