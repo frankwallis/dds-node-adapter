@@ -49,17 +49,37 @@ void NODE_Par(const FunctionCallbackInfo<Value>& args) {
 
 	/* get the arguments */
 	ddTableResults * tableResults = new ddTableResults();
+	
+	if (!args[0] ->IsArray())
+		isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "tableResults should be a 5x4 array of integers (1)")));
+
  	Local<Array> tableResultsJS = Local<Array>::Cast(args[0]);
 
  	for (int i = 0; i < DDS_STRAINS; ++i) {
+		if (!tableResultsJS ->Get(i) ->IsArray())
+			isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "tableResults should be a 5x4 array of integers (2)")));
+
  		Local<Array> resRow = Local<Array>::Cast(tableResultsJS ->Get(i));
 
  		for (int j = 0; j < DDS_HANDS; ++j) {
+ 			if (!resRow ->Get(j) ->IsNumber())
+				isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "tableResults should be a 5x4 array of integers (3)")));
+
+			if (!resRow ->Get(j) ->IsNumber())
+				isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "tableResults should be a 5x4 array of integers (4)")));
+ 			
  			tableResults ->resTable[i][j] = resRow ->Get(j) ->IntegerValue();
  		}
  	}
 
+ 	if (!args[1] ->IsNumber())
+		isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "vulnerability should be an integer value between 0 and 3 inclusive")));
+
 	int vulnerable = args[1] ->IntegerValue();
+
+ 	if (!args[2] ->IsFunction())
+		isolate ->ThrowException(Exception::TypeError(String::NewFromUtf8(isolate, "callback should be a function")));
+
 	Local<Function> callback = Local<Function>::Cast(args[2]);
 
 	/* results struct */
