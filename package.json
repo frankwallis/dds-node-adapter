@@ -1,6 +1,6 @@
 {
   "name": "dds-node-adapter",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "node adapter for dds double-dummy solver",
   "main": "./index.js",
   "author": "Frank Wallis",

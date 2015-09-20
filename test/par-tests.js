@@ -53,7 +53,7 @@ describe("par", function() {
 			[ 6, 6, 6 ]
 		];
 
-		expect(() => dds.par(resTable, dds.VULNERABLE_NONE)).to.throw(/should be a 5x4 array/);
+		expect(dds.par.bind(dds, resTable, dds.VULNERABLE_NONE)).to.throw(/should be a 5x4 array/);
 	});
 
 	it("validates vulnerability argument", function() {
@@ -66,7 +66,7 @@ describe("par", function() {
 			[ 6, 6, 6, 6 ]
 		];
 
-		expect(() => dds.par(resTable, "sausage")).to.throw(/should be an integer/);
+		expect(dds.par.bind(dds, resTable, "sausage")).to.throw(/should be an integer/);
 	});
 
 	xit("validates callback argument", function() {
@@ -79,7 +79,7 @@ describe("par", function() {
 			[ 6, 6, 6, 6 ]
 		];
 
-		expect(() => dds.par(resTable, dds.VULNERABLE_NONE, "sausage")).to.throw(/should be a function/);
+		expect(dds.par.bind(dds, resTable, dds.VULNERABLE_NONE, "sausage")).to.throw(/should be a function/);
 	});
 
 	it("observes vulnerability", function() {

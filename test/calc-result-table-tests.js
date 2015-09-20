@@ -41,7 +41,7 @@ describe("calcResultTable", function() {
 	});
 
 	it("validates pbn argument", function() {
-		expect(() => dds.calcResultTable(null)).to.throw(/should be a PBN string/);
+		expect(dds.calcResultTable.bind(dds, null)).to.throw(/should be a PBN string/);
 	});
 
 });

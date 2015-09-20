@@ -70,12 +70,12 @@ describe("solveBoard", function() {
 		};
 
 		deal.trump = "sausage";
-		expect(() => dds.solveBoard(deal, options)).to.throw(/deal.trump/);
+		expect(dds.solveBoard.bind(dds, deal, options)).to.throw(/deal.trump/);
 
 		deal.trump = dds.SUIT_SPADES;
 		delete deal.currentTrickRank;
 
-		expect(() => dds.solveBoard(deal, options)).to.throw(/currentTrickRank/);
+		expect(dds.solveBoard.bind(dds, deal, options)).to.throw(/currentTrickRank/);
 	});
 
 	it("returns errors", function() {

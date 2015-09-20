@@ -59,7 +59,6 @@ module.exports.solveBoard = function(deal, options, callback) {
 		return deferred.promise;
 	}
 	else {
-		callback = safeCallback(callback);
 		binding.SolveBoard(deal, options.target, options.solutions, options.mode, options.threadIndex, callback);
 		return undefined;
 	}
@@ -72,7 +71,6 @@ module.exports.calcResultTable = function(cards, callback) {
 		return deferred.promise;
 	}
 	else {
-		callback = safeCallback(callback);
 		binding.CalcDDtable(cards, callback);
 		return undefined;
 	}
@@ -85,7 +83,6 @@ module.exports.par = function(resultTable, vulnerable, callback) {
 		return deferred.promise;
 	}
 	else {
-		callback = safeCallback(callback);
 		binding.Par(resultTable, vulnerable, callback);
 		return undefined;
 	}
@@ -107,13 +104,5 @@ function createDeferred() {
 		else result.resolve(res);
 	}
 
-	result.callback = safeCallback(result.callback);
 	return result;
-}
-
-// fix for process.nextTick not firing (see https://github.com/frankwallis/next-tick-test)
-function safeCallback(callback) {
- 	return function(res, err) {
- 		setTimeout(callback.bind(null, res, err), 0);
- 	}
 }
