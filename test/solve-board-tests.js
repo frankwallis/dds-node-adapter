@@ -81,4 +81,45 @@ describe("solveBoard", function() {
 			})
 	});
 
+	it("uses the current trick", function() {
+		var pbn = "N:T... K9... Q.2.. 23...";
+
+		var deal = {
+			trump: dds.SUIT_SPADES,
+			first: dds.HAND_NORTH,
+			currentTrickRanks: [14],
+			currentTrickSuit: [dds.SUIT_SPADES],
+			remainCards: pbn
+		}
+
+		var options = {
+			target: dds.TARGET_MAXIMUM,
+			solutions: dds.SOLUTION_FULL,
+			mode: dds.MODE_AUTO_SEARCH
+		};
+
+		return dds.solveBoard(deal, options)
+			.then(function(result) {
+				console.log(JSON.stringify(result));
+				expect(result.cards).to.equal(2);
+
+				expect(result.score[0]).to.equal(1);
+				expect(result.rank[0]).to.equal(9);
+				expect(result.score[1]).to.equal(0);
+				expect(result.rank[1]).to.equal(13);
+
+				deal.currentTrickRanks = [7];
+				deal.currentTrickSuit = [dds.SUIT_SPADES];
+				return dds.solveBoard(deal, options);
+			})
+			.then(function(result) {
+				console.log(JSON.stringify(result));
+				expect(result.cards).to.equal(2);
+
+				expect(result.score[0]).to.equal(1);
+				expect(result.rank[0]).to.equal(13);
+				expect(result.score[1]).to.equal(1);
+				expect(result.rank[1]).to.equal(9);
+			});
+	});
 });

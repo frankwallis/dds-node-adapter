@@ -24,8 +24,7 @@
     "clean": "node-pre-gyp clean",
     "build": "node-pre-gyp build",
     "rebuild": "node-pre-gyp reinstall",
-    "test": "mocha",
-    "prepublish": "npm ls"
+    "test": "mocha"
   },
   "devDependencies": {
     "aws-sdk": "^2.1.50",

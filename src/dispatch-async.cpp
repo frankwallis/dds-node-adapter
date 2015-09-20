@@ -25,11 +25,11 @@ void AfterAsync (uv_work_t* task) {
   		ErrorMessage(req->errorCode, msg);
 
   		Local<Value> argv[2] = { Undefined(isolate), String::NewFromUtf8(isolate, msg) };
-		callback ->Call(isolate->GetCurrentContext()->Global(), 2, argv);
+  		MakeCallback(isolate, isolate->GetCurrentContext()->Global(), callback, 2, argv);
    }
   	else {
   		Local<Value> argv[2] = { req ->asyncResult(req), Undefined(isolate) };
-		callback ->Call(isolate->GetCurrentContext()->Global(), 2, argv);
+  		MakeCallback(isolate, isolate->GetCurrentContext()->Global(), callback, 2, argv);
   	}
 
   	// cleanup
