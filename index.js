@@ -2,6 +2,7 @@ var binary = require('node-pre-gyp');
 var path = require('path')
 var binding_path = binary.find(path.resolve(path.join(__dirname,'./package.json')));
 var binding = require(binding_path);
+binding.SetMaxThreads(0);
 
 module.exports.SIDE_NS = 0;
 module.exports.SIDE_EW = 1;
@@ -33,10 +34,6 @@ module.exports.TARGET_FULL    = -99;
 module.exports.MODE_AUTO_NOSEARCH = 0;
 module.exports.MODE_AUTO_SEARCH   = 1;
 module.exports.MODE_ALWAYS        = 2;
-
-module.exports.setMaxThreads = function(max) {
-	binding.SetMaxThreads(max);
-}
 
 module.exports.solveBoard = function(deal, options, callback) {
 	var options = options || {};

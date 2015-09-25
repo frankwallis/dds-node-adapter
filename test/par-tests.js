@@ -1,6 +1,4 @@
 var dds = require("../");
-dds.setMaxThreads(2);
-
 var expect = require('chai').expect;
 
 describe("par", function() {
