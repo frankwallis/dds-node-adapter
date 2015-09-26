@@ -39,7 +39,7 @@ function createHand() {
 
 describe("Stress Test", function() {
 
-	it("calls SolveBoard 1000 times", function() {
+	it("calls SolveBoard 100 times", function() {
 		this.timeout(10000);
 		var calls = [];
 
