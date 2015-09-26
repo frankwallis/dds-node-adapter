@@ -7,14 +7,31 @@
 using namespace v8;
 using namespace node;
 
+static uv_mutex_t call_queue_mutex;
+static uv_once_t uv_once_guard = UV_ONCE_INIT;
+
+void initialise() {
+	memset(&call_queue_mutex, 0, sizeof(uv_mutex_t));
+	
+	if (uv_mutex_init(&call_queue_mutex) != 0) {
+		perror("dds-node-adapter: Failed to create mutex");
+		//throw std::runtime_error("Failed to create mutex");
+	}
+}
+
 void DoAsync (uv_work_t* task) {
 	AsyncRequest* req = reinterpret_cast<AsyncRequest*>(task ->data);
+
+	uv_once(&uv_once_guard, initialise);
+	uv_mutex_lock(&call_queue_mutex);
+
   	req ->errorCode = req ->performSync(req);
+  	uv_mutex_unlock(&call_queue_mutex);
 }
 
 void AfterAsync (uv_work_t* task) {
 	AsyncRequest* req = reinterpret_cast<AsyncRequest*>(task ->data);
-	Isolate * isolate = Isolate::GetCurrent();//req ->isolate;
+	Isolate * isolate = req ->isolate;
 	HandleScope scope(isolate);
 
 	Local<Function> callback = Local<Function>::New(isolate, req ->callback);

@@ -40,9 +40,10 @@ function createHand() {
 describe("Stress Test", function() {
 
 	it("calls SolveBoard 1000 times", function() {
+		this.timeout(10000);
 		var calls = [];
 
-		for (var i = 0; i < 1; i ++) {
+		for (var i = 0; i < 100; i ++) {
 			var pbn = createHand();
 			//console.log(pbn);
 
@@ -66,8 +67,8 @@ describe("Stress Test", function() {
 
 		return Promise.all(calls)
 			.then((results, errors) => {
-				console.log(JSON.stringify(errors));
-				console.log(JSON.stringify(results));
+				if (errors)
+					console.log(JSON.stringify(errors));
 				expect(errors).to.be.undefined;
 			})
 			.catch(errors => {
