@@ -137,8 +137,9 @@ void NODE_SolveBoard(const FunctionCallbackInfo<Value>& args) {
 
 			deal ->currentTrickSuit[i] = trickSuits ->Get(i) ->IntegerValue();	
  		}
-		else 
+		else {
 			deal ->currentTrickSuit[i] = 0;
+		}
  	}
 
  	if (!dealJS ->Get(String::NewFromUtf8(isolate, "currentTrickRank")) ->IsArray())  {
@@ -157,8 +158,9 @@ void NODE_SolveBoard(const FunctionCallbackInfo<Value>& args) {
 
 			deal ->currentTrickRank[j] = trickRanks ->Get(j) ->IntegerValue();	
  		}
-		else 
+		else { 
 			deal ->currentTrickRank[j] = 0;
+		}
  	}
 
  	if (!dealJS ->Get(String::NewFromUtf8(isolate, "remainCards")) ->IsString())  {
