@@ -16,7 +16,7 @@
     "host": "https://dds-node-adapter.s3-eu-west-1.amazonaws.com"
   },
   "dependencies": {
-    "napa": "^1.2.0",
+    "napa": "^2.0.2",
     "node-pre-gyp": "^0.6.10"
   },
   "scripts": {
