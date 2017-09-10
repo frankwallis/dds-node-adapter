@@ -1,6 +1,6 @@
 {
   "name": "dds-node-adapter",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "node adapter for dds double-dummy solver",
   "main": "./index.js",
   "author": "Frank Wallis",
@@ -16,8 +16,8 @@
     "host": "https://dds-node-adapter.s3-eu-west-1.amazonaws.com"
   },
   "dependencies": {
-    "napa": "^2.0.2",
-    "node-pre-gyp": "^0.6.10"
+    "napa": "^3.0.0",
+    "node-pre-gyp": "^0.6.37"
   },
   "scripts": {
     "install": "napa dds-bridge/dds && node-pre-gyp install --fallback-to-build",
@@ -28,9 +28,9 @@
     "test": "mocha --timeout 30000"
   },
   "devDependencies": {
-    "aws-sdk": "^2.1.50",
-    "chai": "^3.2.0",
-    "mocha": "^2.3.0"
+    "aws-sdk": "^2.112.0",
+    "chai": "^4.1.2",
+    "mocha": "^3.5.2"
   },
   "engines": {
     "node": ">=4.1"

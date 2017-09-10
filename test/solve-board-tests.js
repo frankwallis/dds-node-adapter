@@ -95,7 +95,7 @@ describe("solveBoard", function() {
 
 		return dds.solveBoard(deal, options)
 			.catch(function(err) {
-				expect(err).to.be.defined;
+				expect(err).to.not.be.undefined;
 				return undefined;
 			})
 			.then(function(result) {
