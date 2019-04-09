@@ -1,6 +1,6 @@
 {
   "name": "dds-node-adapter",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "node adapter for dds double-dummy solver",
   "main": "./index.js",
   "author": "Frank Wallis",
@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "napa": "^3.0.0",
-    "node-pre-gyp": "^0.6.37"
+    "node-pre-gyp": "^0.12.0"
   },
   "scripts": {
     "install": "napa dds-bridge/dds && node-pre-gyp install --fallback-to-build",

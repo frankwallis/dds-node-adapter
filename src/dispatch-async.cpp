@@ -36,7 +36,7 @@ void AfterAsync (uv_work_t* task) {
 	HandleScope scope(isolate);
 
 	Local<Function> callback = Local<Function>::New(isolate, req ->callback);
-  	TryCatch try_catch;
+  	TryCatch try_catch(isolate);
 
   	if (req ->errorCode != RETURN_NO_FAULT) {
   		char msg[80];
@@ -55,7 +55,7 @@ void AfterAsync (uv_work_t* task) {
   	delete task;
 
   	if (try_catch.HasCaught()) {
-   	FatalException(isolate, try_catch);
+   		FatalException(isolate, try_catch);
   	}
 }
 
